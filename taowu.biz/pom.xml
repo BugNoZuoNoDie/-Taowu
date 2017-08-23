@@ -6,4 +6,17 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>taowu.biz</artifactId>
+  <version>0.0.1</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.taowu</groupId>
+    	<artifactId>taowu.share</artifactId>
+  		<version>0.0.1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.taowu</groupId>
+  		<artifactId>taowu.core</artifactId>
+  		<version>0.0.1</version>
+  	</dependency>
+  </dependencies>
 </project>
