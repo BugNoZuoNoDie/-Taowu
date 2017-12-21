@@ -7,7 +7,7 @@
 #Taowu
 #业务系统(负责业务)
 #		core 
-#			核心包
+#			核心包(将来单独独立出来)
 #		discovrey 
 #			注册包
 #		share 
