@@ -1,3 +1,13 @@
-## master 数据源配置
-datasource: 
-  
+## master 多数据源配置
+DB: 
+  datas:
+   - dbName: master
+     datasources: jdbc:mysql://127.0.0.1:3306/taowu?useSSL=false&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8
+     username: root
+     pwd: root
+     driverClassName: com.mysql.jdbc.Driver
+   - dbName: cluster
+     datasources: jdbc:mysql://127.0.0.1:3306/taowu?useSSL=false&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8
+     username: root
+     pwd: root
+     driverClassName: com.mysql.jdbc.Driver
