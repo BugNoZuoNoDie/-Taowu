@@ -1,4 +1,4 @@
-package taowu.core.config.db;
+package taowu.core.config.starter.druid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +48,6 @@ public class DataBaseProperties {
 	public void setDbName(String dbName) {
 		this.dbName = dbName;
 	}
-
-
-
 
 	public static class Datas{
 		String url;

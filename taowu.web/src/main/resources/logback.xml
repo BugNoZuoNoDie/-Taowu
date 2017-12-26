@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 从高到低：OFF，FATAL，ERROR，WARN，INFO，DEBUG，TRACE，ALL -->
+<!-- 日志输出规则：输出比当前ROOT级别高的日志，另外亦可考虑filter级别过滤器 -->
+<!-- scan=true，一旦配置文件发生改变，将会被重新加载，默认为true； scanPeriod，监测配置文件是否有修改的时间间隔，默认单位是毫秒，scan为true才生效，默认的时间间隔为1分钟； 
+	debug=true，打印logback内部日志信息，实时查看logback运行状态，默认为false； -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<property name="LOG_HOME" value="taowu" />
+	<!-- 定义日志文件位置 -->
+	<property name="logDir" value="/xu/taowu/logs" />
+	<!-- 日志最大历史30天 -->
+	<property name="maxHistory" value="30" />
+
+	<!-- 控制台输出日志 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- 对日志进行格式化 -->
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d [%thread] %-5p [%c][%F:%L]- %msg%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="ERROR_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${logDir}/error-%d{yyyy-MM-dd}_ERROR.log
+			</FileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d [%thread] %-5p [%c][%F:%L][trace=%X{X-Trace-Id:-},span=%X{X-Span-Id:-},parent=%X{X-Parent-Id:-},name=%X{X-Span-Name:-},app=%X{LOG_HOME:-},begintime=%X{begintime:-},endtime=%X{fin-X1-time:-}]- %msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>  <!-- 只打印Error日志 -->
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<appender name="DEBUG_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${logDir}/debug-%d{yyyy-MM-dd}_DEBUG.log
+			</FileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d [%thread] %-5p [%c][%F:%L][trace=%X{X-Trace-Id:-},span=%X{X-Span-Id:-},parent=%X{X-Parent-Id:-},name=%X{X-Span-Name:-},app=%X{LOG_HOME:-},begintime=%X{begintime:-},endtime=%X{fin-X1-time:-}]- %msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>  <!-- 只打印Error日志 -->
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<appender name="INFO_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${logDir}/info-%d{yyyy-MM-dd}_INFO.log
+			</FileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d [%thread] %-5p [%c][%F:%L][trace=%X{X-Trace-Id:-},span=%X{X-Span-Id:-},parent=%X{X-Parent-Id:-},name=%X{X-Span-Name:-},app=%X{LOG_HOME:-},begintime=%X{begintime:-},endtime=%X{fin-X1-time:-}]- %msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>  <!-- 只打印Error日志 -->
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<appender name="WARN_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${logDir}/warn-%d{yyyy-MM-dd}_WARN.log
+			</FileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d [%thread] %-5p [%c][%F:%L][trace=%X{X-Trace-Id:-},span=%X{X-Span-Id:-},parent=%X{X-Parent-Id:-},name=%X{X-Span-Name:-},app=%X{LOG_HOME:-},begintime=%X{begintime:-},endtime=%X{fin-X1-time:-}]- %msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>  <!-- 只打印Error日志 -->
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<!-- 异步输出DEBUG日志 -->
+	<appender name="DEBUG_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+		<discardingThreshold>0</discardingThreshold>
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+		<queueSize>512</queueSize>
+		<!-- 添加附加的appender,最多只能添加一个 -->
+		<appender-ref ref="DEBUG_FILE" />
+	</appender>
+	
+	<!-- 异步输出INFO日志 -->
+	<appender name="INFO_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+		<discardingThreshold>0</discardingThreshold>
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+		<queueSize>512</queueSize>
+		<!-- 添加附加的appender,最多只能添加一个 -->
+		<appender-ref ref="INFO_FILE" />
+	</appender>
+	
+	<!-- 异步输出ERROR日志 -->
+	<appender name="ERROR_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+		<discardingThreshold>0</discardingThreshold>
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+		<queueSize>256</queueSize>
+		<!-- 添加附加的appender,最多只能添加一个 -->
+		<appender-ref ref="ERROR_FILE" />
+	</appender>
+	
+	<!-- 异步输出WARN日志 -->
+	<appender name="WARN_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+		<discardingThreshold>0</discardingThreshold>
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+		<queueSize>512</queueSize>
+		<!-- 添加附加的appender,最多只能添加一个 -->
+		<appender-ref ref="WARN_FILE" />
+	</appender>
+
+	<!-- package log level configure -->
+	<logger name="org.springframework" level="WARN" />
+	<logger name="org.apache.ibatis" level="WARN" />
+	<logger name="org.mybatis.spring" level="WARN" />
+	<logger name="java.sql" level="WARN" />
+	<logger name="ch.qos.logback" level="ERROR" />
+	<logger name="druid.sql" level="INFO" />
+	<!-- 日志输出级别 -->
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		<!-- 异步文件输出 -->
+	    <appender-ref ref="INFO_ASYNC" />
+	    <appender-ref ref="WARN_ASYNC" />
+	    <appender-ref ref="ERROR_ASYNC" />
+	    <appender-ref ref="DEBUG_ASYNC" />
+	</root>
+</configuration>
